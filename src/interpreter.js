@@ -57,6 +57,27 @@ var Interpreter = function () {
         return false;
     }
 
+    this.ruleExists = function (rule) {
+        var getRuleName = function (rule){
+            return rule.substring(0,rule.indexOf("("));
+        }
+        var ruleName = getRuleName(rule);
+        for(i in dict.rules){
+            if(ruleName == getRuleName(dict.rules[i])){
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    this.checkRules = function (rule) {
+        if(!this.ruleExists(rule)){
+            return false;
+        }
+
+    }
+
     this.checkQuery = function (query) {
         if(!this.isQuery(query)){
             throw Error('Incomplete Query');
@@ -64,7 +85,9 @@ var Interpreter = function () {
         if(this.checkFacts(query)){
             return true;
         }
-        //console.log(dict.facts[0]);
+        if(this.checkRules(query)){
+            return true;
+        }
         return false;
     }
 

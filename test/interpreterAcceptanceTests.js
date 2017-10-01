@@ -86,6 +86,10 @@ describe("Interpreter", function () {
 
     describe('Interpreter Rules', function () {
 
+        it('sobrino(pepe, juan) should be false', function () {
+            assert(interpreter.checkQuery('sobrino(pepe, juan)') === false);
+        });
+
         it('hijo(pepe, juan) should be true', function () {
             assert(interpreter.checkQuery('hijo(pepe, juan)') === true);
         });
