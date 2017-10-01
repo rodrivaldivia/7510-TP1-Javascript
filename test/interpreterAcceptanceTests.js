@@ -67,6 +67,14 @@ describe("Interpreter", function () {
             assert(interpreter.checkQuery('padre(mario, pepe)') === false);
         });
 
+        it('padre(mario, pepe) should be juan', function () {
+            assert(interpreter.checkQuery('padre(mario, juan)') === false);
+        });
+
+        it('padre(hector, maria) should be true', function () {
+            assert(interpreter.checkQuery('padre(hector, maria)') === true);
+        });
+
         // TODO: Add more tests
 
         // Chai expect error doesn't work - Issue #430
