@@ -70,9 +70,9 @@ describe("Interpreter", function () {
         // TODO: Add more tests
 
         // Chai expect error doesn't work - Issue #430
-        /*it('padre alone should throw an error', function () {
-            expect(() => interpreter.checkQuery('padre')).to.throw(new Error());
-        });*/
+        it('Incomplete query should throw an error', function () {
+            expect(() => interpreter.checkQuery('padre')).to.throw(Error('Incomplete Query'));
+        });
 
     });
 

@@ -1,5 +1,7 @@
 var Interpreter = function () {
 
+    var dict;
+
     this.isRule = function (string){
         var ruleReg = /\w+\(\w+(,\ \w+)*\)\ \:\-\ (\w+\(\w+(,\ \w+)*\),\ )*./;
         return ruleReg.test(string);
@@ -27,29 +29,43 @@ var Interpreter = function () {
         for (var i in db){
             console.log(db[i])
             if(this.isRule(db[i])){
-            rulesArray.push(db[i]);
+
+            rulesArray.push(db[i].replace(".",""));
             }
             else{
               if(this.isFact(db[i])){
-                  factsArray.push(db[i]);
+                  factsArray.push(db[i].replace(".",""));
               }
               else{
-                      throw new Error();
+                      throw Error;
               }
             }
         }
-        var dict = {
+        dict = {
             facts: factsArray,
             rules: rulesArray
         };
     }
 
+    this.checkFacts = function (query) {
+
+        for (var i in dict.facts){
+            if (dict.facts[i] == query){
+                return true;
+            }
+        }
+        return false;
+    }
+
     this.checkQuery = function (query) {
         if(!this.isQuery(query)){
-            throw new Error();
+            throw Error('Incomplete Query');
         }
-
-        return true;
+        if(this.checkFacts(query)){
+            return true;
+        }
+        //console.log(dict.facts[0]);
+        return false;
     }
 
 }
