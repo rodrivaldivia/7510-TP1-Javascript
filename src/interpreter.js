@@ -1,3 +1,7 @@
+String.prototype.replaceAll = function(target, replacement) {
+  return this.split(target).join(replacement);
+};
+
 var Interpreter = function () {
 
     var dict;
@@ -62,7 +66,7 @@ var Interpreter = function () {
             return rule.substring(0,rule.indexOf("("));
         }
         var ruleName = getRuleName(rule);
-        for(i in dict.rules){
+        for(var i in dict.rules){
             if(ruleName == getRuleName(dict.rules[i])){
                 return true;
             }
@@ -71,11 +75,54 @@ var Interpreter = function () {
         return false;
     }
 
+    this.getArguments = function (rule) {
+        var args = rule.substring(rule.indexOf("(")+1,rule.indexOf(")"));
+        return args.split(", ");
+    }
+
+    this.getCompleteRule = function (rule) {
+        var getRuleName = function (rule){
+            return rule.substring(0,rule.indexOf("("));
+        }
+        var ruleName = getRuleName(rule);
+        for(var i in dict.rules){
+            if(ruleName == getRuleName(dict.rules[i])){
+                return dict.rules[i];
+            }
+
+        }
+    }
+
+    this.getFacts = function (ruleArguments, completeRule){
+        var rule = completeRule;
+        var genericArguments = this.getArguments(completeRule);
+        for(var i in ruleArguments){
+            rule = rule.replaceAll(genericArguments[i], ruleArguments[i]);
+        }
+        var ruleFacts = rule.substring(rule.indexOf(":- ") + 3);
+        var splitedFacts = ruleFacts.split("), ");
+        for(i in splitedFacts){
+          console.log(i);
+          if (i != (splitedFacts.length - 1)){
+            splitedFacts[i] += ')';
+          }
+        }
+        return splitedFacts;
+    }
+
     this.checkRules = function (rule) {
         if(!this.ruleExists(rule)){
             return false;
         }
-
+        var ruleArguments = this.getArguments(rule);
+        var completeRule = this.getCompleteRule(rule);
+        var facts = this.getFacts(ruleArguments, completeRule);
+        for (var i in facts){
+            if (!this.checkFacts(facts[i])){
+                return false;
+            }
+        }
+        return true;
     }
 
     this.checkQuery = function (query) {
