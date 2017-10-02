@@ -31,7 +31,6 @@ var Interpreter = function () {
         var factsArray = [];
         var rulesArray = [];
         for (var i in db){
-            console.log(db[i])
             if(this.isRule(db[i])){
 
             rulesArray.push(db[i].replace(".",""));
@@ -102,7 +101,6 @@ var Interpreter = function () {
         var ruleFacts = rule.substring(rule.indexOf(":- ") + 3);
         var splitedFacts = ruleFacts.split("), ");
         for(i in splitedFacts){
-          console.log(i);
           if (i != (splitedFacts.length - 1)){
             splitedFacts[i] += ')';
           }
@@ -127,7 +125,7 @@ var Interpreter = function () {
 
     this.checkQuery = function (query) {
         if(!this.isQuery(query)){
-            throw Error('Incomplete Query');
+            throw Error('Query is not valid');
         }
         if(this.checkFacts(query)){
             return true;

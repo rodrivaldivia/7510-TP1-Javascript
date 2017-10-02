@@ -75,12 +75,18 @@ describe("Interpreter", function () {
             assert(interpreter.checkQuery('padre(hector, maria)') === true);
         });
 
-        // TODO: Add more tests
-
-        // Chai expect error doesn't work - Issue #430
         it('Incomplete query should throw an error', function () {
-            expect(() => interpreter.checkQuery('padre')).to.throw(Error('Incomplete Query'));
+            expect(function() {interpreter.checkQuery('padre')}).to.throw(Error);
         });
+
+        it('Invalid query should throw an error', function () {
+            expect(function() {interpreter.checkQuery('padre((camila, juan))')}).to.throw(Error);
+        });
+
+        it('Invalid query should throw an error', function () {
+            expect(function() {interpreter.checkQuery('padre[mario, juan]')}).to.throw(Error);
+        });
+
 
     });
 
@@ -97,9 +103,16 @@ describe("Interpreter", function () {
             assert(interpreter.checkQuery('hija(maria, roberto)') === false);
         });
         it('hijo(pepe, juan) should be true', function () {
-            assert(interpreter.checkQuery('hijo(pepe, juan)'));
+            assert(interpreter.checkQuery('hijo(pepe, juan)') === true);
         });
 
+        it('hijo(juan, juan) should be false', function () {
+            assert(interpreter.checkQuery('hijo(juan, juan)') === false);
+        });
+
+        it('hija(pepa, juan) should be false', function () {
+            assert(interpreter.checkQuery('hijo(pepa, juan)') === false);
+        });
         // TODO: Add more tests
 
     });
